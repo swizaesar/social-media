@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { color } from "../helpers/variable";
+import { color } from "../../helpers/variable";
 
 const HeaderStyle = styled.header`
     padding: 20px 0;
@@ -10,30 +10,20 @@ const HeaderStyle = styled.header`
             justify-content: space-between;
             align-items: center;
             &__home {
-            }
-            &__list {
-                display: flex;
-                padding: 0px;
-                list-style: none;
-                li {
-                    padding: 0 15px;
-                }
-                &-item {
-                    color: #fff;
-                    padding: 10px 0;
-                    position: relative;
-                    &.active {
-                        &:before {
-                            content: "";
-                            height: 2px;
-                            border-radius: 5px;
-                            background-color: #fff;
-                            bottom: 0;
-                            left: 0;
-                            position: absolute;
-                            right: 0;
-                            z-index: 2;
-                        }
+                color: #fff;
+                font-weight: 500;
+                position: relative;
+                &.active {
+                    &:before {
+                        content: "";
+                        height: 2px;
+                        border-radius: 5px;
+                        background-color: #fff;
+                        bottom: 0;
+                        left: 0;
+                        position: absolute;
+                        right: 0;
+                        z-index: 2;
                     }
                 }
             }

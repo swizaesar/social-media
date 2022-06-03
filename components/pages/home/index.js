@@ -1,11 +1,20 @@
+import { Col, Row } from "antd";
 import React from "react";
-const Home = () => {
+import CardUser from "../../card/cardUsers";
+
+const Home = ({ data }) => {
+    const gutter = 16;
     return (
         <div>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis
-            vitae unde error molestiae quidem soluta magnam, libero laboriosam
-            nihil sed nesciunt necessitatibus quod. Alias ab autem quaerat
-            asperiores id ad!
+            <Row gutter={gutter}>
+                {data.map((item, key) => {
+                    return (
+                        <Col xl={8} sm={12} xs={24} key={key}>
+                            <CardUser gutter={gutter} data={item} />
+                        </Col>
+                    );
+                })}
+            </Row>
         </div>
     );
 };

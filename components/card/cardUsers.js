@@ -1,8 +1,8 @@
-import { Card } from "antd";
 import React from "react";
 import { CardUserStyle } from "./style";
+import Link from "next/link";
 
-const CardUser = ({ data, gutter = 0 }) => {
+const CardUser = ({ data, gutter = 0, onClick = () => {} }) => {
     const [loading, setLoading] = React.useState(true);
     React.useEffect(() => {
         if (data) {
@@ -11,6 +11,14 @@ const CardUser = ({ data, gutter = 0 }) => {
     }, [data]);
     return (
         <CardUserStyle
+            actions={[
+                <Link href={`/albums/${data.id}`}>
+                    <a className="card-action">View Albums</a>
+                </Link>,
+                <Link href={`/albums/${data.id}`}>
+                    <a className="card-action">View Post</a>
+                </Link>,
+            ]}
             gutter={gutter}
             loading={loading}
             title={data.name}

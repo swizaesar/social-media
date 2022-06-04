@@ -23,6 +23,15 @@ export const CardUserStyle = styled(Card)`
         }
     }
 `;
+export const CardPhotoStyle = styled(Card)`
+    margin-bottom: ${(props) => props.gutter}px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    .title {
+        font-size: 12px;
+        font-weight: 700;
+        white-space: break-spaces;
+    }
+`;
 export const CardAlbumStyle = styled.div`
     border-top: 1px solid #f0f0f0;
     background: #ffff;

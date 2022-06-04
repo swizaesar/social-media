@@ -9,6 +9,7 @@ const PhotosPage = () => {
     const router = useRouter();
     const { slug } = router.query;
     const [data, setData] = React.useState([]);
+    const [album, setAlbum] = React.useState([]);
     const [user, setUser] = React.useState(false);
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
@@ -16,16 +17,19 @@ const PhotosPage = () => {
         if (slug !== undefined) {
             let paramsPhotos = {
                 albumId: slug,
+                limit: 5,
             };
+
             fetchApi.getAlbumsDetail({ dispatch, id: slug });
             fetchApi.getPhotosList({ dispatch, params: paramsPhotos });
         }
     }, [dispatch, slug]);
     React.useEffect(() => {
+        if (state?.photos?.isSuccess) {
+            setData(state.photos.data);
+        }
         if (state?.albumDetail?.isSuccess) {
-            setData(state.albumDetail.data);
-            console.log("state di effect", state);
-            console.log(state.albumDetail.data);
+            setAlbum(state.albumDetail.data);
             fetchApi.getUsersDetail({
                 dispatch,
                 id: state.albumDetail.data.userId,
@@ -34,12 +38,14 @@ const PhotosPage = () => {
         }
         if (state?.userDetail?.isSuccess) {
             setUser(state.userDetail.data);
-            console.log("state di effect user", state);
         }
-    }, [state]);
+    }, [state, dispatch]);
+    console.log(data);
+    console.log(user);
+    console.log(album);
     return (
         <Layout>
-            <Photos userName={user?.name} data={data} />
+            <Photos user={user} data={data} album={album} />
         </Layout>
     );
 };

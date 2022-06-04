@@ -56,3 +56,7 @@ export const CardAlbumStyle = styled.div`
         }
     }
 `;
+export const CardPostStyle = styled(Card)`
+    margin-bottom: ${(props) => props.gutter}px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+`;

@@ -15,7 +15,7 @@ const CardUser = ({ data, gutter = 0, onClick = () => {} }) => {
                 <Link href={`/albums/${data.id}`}>
                     <a className="card-action">View Albums</a>
                 </Link>,
-                <Link href={`/albums/${data.id}`}>
+                <Link href={`/posts/${data.id}`}>
                     <a className="card-action">View Post</a>
                 </Link>,
             ]}

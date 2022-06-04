@@ -40,9 +40,6 @@ const PhotosPage = () => {
             setUser(state.userDetail.data);
         }
     }, [state, dispatch]);
-    console.log(data);
-    console.log(user);
-    console.log(album);
     return (
         <Layout>
             <Photos user={user} data={data} album={album} />

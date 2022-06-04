@@ -23,6 +23,41 @@ const fetchApi = {
             key: "albums",
         });
     },
+    getPostsList: ({ dispatch, params }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts`,
+            method: "GET",
+            params: params,
+            key: "posts",
+        });
+    },
+    postListClear: ({ dispatch }) => {
+        serviceAction(dispatch).reduxClear({
+            type: "CLEAR",
+            key: "posts",
+        });
+    },
+    updatePostList: ({ dispatch, data }) => {
+        serviceAction(dispatch).reduxSetData({
+            data: data,
+            key: "posts",
+            type: 200,
+        });
+    },
+    createPost: ({ dispatch, data }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts`,
+            method: "POST",
+            data: data,
+            key: "createPost",
+        });
+    },
+    createPostClear: ({ dispatch, data }) => {
+        serviceAction(dispatch).reduxSetData({
+            type: "CLEAR",
+            key: "createPost",
+        });
+    },
     getAlbumsDetail: ({ dispatch, id }) => {
         serviceAction(dispatch).fetchApi({
             url: `/albums/${id}`,

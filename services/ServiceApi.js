@@ -12,7 +12,7 @@ const serviceApi = async (options) => {
                 success: true,
                 error: false,
                 key: options.key,
-                type: "success",
+                type: res.status,
             };
         })
         .catch((err) => {
@@ -21,7 +21,7 @@ const serviceApi = async (options) => {
                 success: false,
                 error: true,
                 key: options.key,
-                type: "error",
+                type: res.status,
             };
         });
 };
@@ -31,6 +31,7 @@ const fetchApi = async (dispatch, value) => {
     if (result) {
         dispatch({
             data: result.response,
+            headers: result.headers,
             isError: result.error,
             isSuccess: result.success,
             key: value.key,
@@ -41,6 +42,10 @@ const fetchApi = async (dispatch, value) => {
 const clearData = (dispatch, value) => {
     dispatch(value);
 };
+const setData = (dispatch, value) => {
+    dispatch(value);
+};
+
 // Service Action Type
 const serviceAction = (dispatch) => ({
     // Fetch API Type
@@ -49,6 +54,9 @@ const serviceAction = (dispatch) => ({
     },
     reduxClear: (value) => {
         clearData(dispatch, value);
+    },
+    reduxSetData: (value) => {
+        setData(dispatch, value);
     },
 });
 export default serviceAction;

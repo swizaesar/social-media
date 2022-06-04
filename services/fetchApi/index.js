@@ -39,6 +39,20 @@ const fetchApi = {
             key: "editPost",
         });
     },
+    deletePost: ({ dispatch, data }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts/${data.id}`,
+            method: "DELETE",
+            data: data,
+            key: "deletePost",
+        });
+    },
+    deletePostClear: ({ dispatch }) => {
+        serviceAction(dispatch).reduxSetData({
+            type: "CLEAR",
+            key: "deletePost",
+        });
+    },
     editPostClear: ({ dispatch }) => {
         serviceAction(dispatch).reduxSetData({
             type: "CLEAR",

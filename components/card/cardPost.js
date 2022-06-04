@@ -1,14 +1,19 @@
 import React from "react";
 import { CardPostStyle } from "./style";
 import { Button } from "antd";
-const CardPost = ({ data, gutter, editAction = () => {} }) => {
+const CardPost = ({
+    data,
+    gutter,
+    editAction = () => {},
+    deleteAction = () => {},
+}) => {
     return (
         <CardPostStyle
             gutter={gutter}
             actions={[
                 <div onClick={() => editAction(data)}>Edit</div>,
                 <div>Comment</div>,
-                <div>Delete</div>,
+                <div onClick={() => deleteAction(data)}>Delete</div>,
             ]}
         >
             <h3>{data.title}</h3>

@@ -8,6 +8,7 @@ const Posts = ({
     user,
     openModal = () => {},
     toggleModalCreate = () => {},
+    handleDeleteModal = () => {},
 }) => {
     const gutter = 16;
     return (
@@ -23,6 +24,7 @@ const Posts = ({
                     return (
                         <Col span={24} key={key}>
                             <CardPost
+                                deleteAction={handleDeleteModal}
                                 editAction={openModal}
                                 gutter={gutter}
                                 data={item}

@@ -5,6 +5,7 @@ import Layout from "../../components/layout";
 import fetchApi from "../../services/fetchApi";
 import Posts from "../../components/pages/posts";
 import PostModal from "../../components/modal/postModal";
+import DeletePost from "../../components/modal/deletePost";
 
 const PostsPage = () => {
     const router = useRouter();
@@ -17,16 +18,10 @@ const PostsPage = () => {
     const [user, setUser] = React.useState(false);
     const [isShowEdit, setShowEdit] = React.useState(false);
     const [titleModal, setTitleModal] = React.useState("Create Post");
+    const [isDelete, setDelete] = React.useState(false);
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
-    const toggleModalEdit = (data) => {
-        setPostDetail(data);
-        setShowEdit(!isShowEdit);
-        setTitleModal("Edit Post");
-        setTitleValue(data.title);
-        setEdit(true);
-        setDescValue(data.body);
-    };
+
     const onChangeInput = (type, value) => {
         switch (type) {
             case "title":
@@ -35,6 +30,15 @@ const PostsPage = () => {
                 return setDescValue(value);
         }
     };
+    const toggleModalEdit = (data) => {
+        setPostDetail(data);
+        setShowEdit(!isShowEdit);
+        setTitleModal("Edit Post");
+        setTitleValue(data.title);
+        setEdit(true);
+        setDescValue(data.body);
+    };
+
     const toggleModalCreate = () => {
         setShowEdit(!isShowEdit);
         setTitleModal("Create Post");
@@ -51,7 +55,6 @@ const PostsPage = () => {
         fetchApi.createPost({ dispatch, data });
     };
     const handleEditPost = () => {
-        console.log(postDetail);
         let updateData = {
             title: titleValue,
             body: descValue,
@@ -59,6 +62,20 @@ const PostsPage = () => {
             id: postDetail.id,
         };
         fetchApi.editPost({ dispatch, data: updateData });
+    };
+    const handleDeleteModal = (value) => {
+        setDelete(!isDelete);
+        setPostDetail(value);
+    };
+
+    const handleConfirmDelete = () => {
+        let updateData = {
+            title: titleValue,
+            body: descValue,
+            userId: postDetail.id,
+            id: postDetail.id,
+        };
+        fetchApi.deletePost({ dispatch, data: updateData });
     };
     React.useEffect(() => {
         if (slug !== undefined) {
@@ -91,14 +108,21 @@ const PostsPage = () => {
             setShowEdit(!isShowEdit);
             let filterData = data.filter((item) => item.id !== postDetail.id);
             let dataUpdate = [state.editPost.data, ...filterData];
-            console.log(dataUpdate);
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.editPostClear({ dispatch });
+        }
+        if (state?.deletePost?.isSuccess) {
+            setDelete(!isDelete);
+            let filterData = data.filter((item) => item.id !== postDetail.id);
+            let dataUpdate = [...filterData];
+            fetchApi.updatePostList({ dispatch, data: dataUpdate });
+            fetchApi.deletePostClear({ dispatch });
         }
     }, [state, dispatch]);
     return (
         <Layout>
             <Posts
+                handleDeleteModal={handleDeleteModal}
                 toggleModalCreate={toggleModalCreate}
                 user={user}
                 data={data}
@@ -114,6 +138,12 @@ const PostsPage = () => {
                 title={titleModal}
                 isShow={isShowEdit}
                 handleCancel={toggleModalEdit}
+            />
+            <DeletePost
+                handleConfirmDelete={handleConfirmDelete}
+                data={postDetail}
+                handleCancel={handleDeleteModal}
+                isShow={isDelete}
             />
         </Layout>
     );

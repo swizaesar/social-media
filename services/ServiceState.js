@@ -7,6 +7,7 @@ const serviceState = {
     albumDetail: false,
     posts: false,
     createPost: false,
+    deletePost: false,
     comments: false,
 };
 export default serviceState;

@@ -33,7 +33,7 @@ const fetchApi = {
     },
     editPost: ({ dispatch, data }) => {
         serviceAction(dispatch).fetchApi({
-            url: `/posts/${data.id}`,
+            url: `/posts/${data.userId}`,
             method: "PUT",
             data: data,
             key: "editPost",
@@ -41,7 +41,7 @@ const fetchApi = {
     },
     deletePost: ({ dispatch, data }) => {
         serviceAction(dispatch).fetchApi({
-            url: `/posts/${data.id}`,
+            url: `/posts/${data.userId}`,
             method: "DELETE",
             data: data,
             key: "deletePost",

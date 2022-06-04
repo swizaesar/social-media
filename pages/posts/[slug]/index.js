@@ -1,11 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "../../components/layout";
-import fetchApi from "../../services/fetchApi";
-import Posts from "../../components/pages/posts";
-import PostModal from "../../components/modal/postModal";
-import DeletePost from "../../components/modal/deletePost";
+import Layout from "../../../components/layout";
+import fetchApi from "../../../services/fetchApi";
+import Posts from "../../../components/pages/posts";
+import PostModal from "../../../components/modal/postModal";
+import DeletePost from "../../../components/modal/deletePost";
 
 const PostsPage = () => {
     const router = useRouter();
@@ -58,7 +58,7 @@ const PostsPage = () => {
         let updateData = {
             title: titleValue,
             body: descValue,
-            userId: postDetail.id,
+            userId: user.id,
             id: postDetail.id,
         };
         fetchApi.editPost({ dispatch, data: updateData });
@@ -72,7 +72,7 @@ const PostsPage = () => {
         let updateData = {
             title: titleValue,
             body: descValue,
-            userId: postDetail.id,
+            userId: user.id,
             id: postDetail.id,
         };
         fetchApi.deletePost({ dispatch, data: updateData });
@@ -101,6 +101,7 @@ const PostsPage = () => {
         if (state?.createPost?.isSuccess) {
             setShowEdit(!isShowEdit);
             let dataUpdate = [state.createPost.data, ...data];
+            console.log(dataUpdate);
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.createPostClear({ dispatch });
         }

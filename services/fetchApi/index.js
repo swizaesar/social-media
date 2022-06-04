@@ -23,5 +23,26 @@ const fetchApi = {
             key: "albums",
         });
     },
+    getAlbumsDetail: ({ dispatch, id }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/albums/${id}`,
+            method: "GET",
+            key: "albumDetail",
+        });
+    },
+    getAlbumsClear: ({ dispatch }) => {
+        serviceAction(dispatch).reduxClear({
+            type: "CLEAR",
+            key: "albumDetail",
+        });
+    },
+    getPhotosList: ({ dispatch, params }) => {
+        serviceAction(dispatch).fetchApi({
+            url: "/photos",
+            params: params,
+            method: "GET",
+            key: "photos",
+        });
+    },
 };
 export default fetchApi;

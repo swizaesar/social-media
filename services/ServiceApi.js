@@ -38,11 +38,17 @@ const fetchApi = async (dispatch, value) => {
         });
     }
 };
+const clearData = (dispatch, value) => {
+    dispatch(value);
+};
 // Service Action Type
 const serviceAction = (dispatch) => ({
     // Fetch API Type
     fetchApi: (value) => {
         fetchApi(dispatch, value);
+    },
+    reduxClear: (value) => {
+        clearData(dispatch, value);
     },
 });
 export default serviceAction;

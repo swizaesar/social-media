@@ -10,6 +10,7 @@ const PostsPage = () => {
     const router = useRouter();
     const { slug } = router.query;
     const [data, setData] = React.useState([]);
+    const [postDetail, setPostDetail] = React.useState({});
     const [titleValue, setTitleValue] = React.useState("");
     const [descValue, setDescValue] = React.useState("");
     const [isEdit, setEdit] = React.useState(false);
@@ -19,6 +20,7 @@ const PostsPage = () => {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
     const toggleModalEdit = (data) => {
+        setPostDetail(data);
         setShowEdit(!isShowEdit);
         setTitleModal("Edit Post");
         setTitleValue(data.title);
@@ -48,6 +50,16 @@ const PostsPage = () => {
         };
         fetchApi.createPost({ dispatch, data });
     };
+    const handleEditPost = () => {
+        console.log(postDetail);
+        let updateData = {
+            title: titleValue,
+            body: descValue,
+            userId: postDetail.id,
+            id: postDetail.id,
+        };
+        fetchApi.editPost({ dispatch, data: updateData });
+    };
     React.useEffect(() => {
         if (slug !== undefined) {
             let params = {
@@ -75,6 +87,14 @@ const PostsPage = () => {
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.createPostClear({ dispatch });
         }
+        if (state?.editPost?.isSuccess) {
+            setShowEdit(!isShowEdit);
+            let filterData = data.filter((item) => item.id !== postDetail.id);
+            let dataUpdate = [state.editPost.data, ...filterData];
+            console.log(dataUpdate);
+            fetchApi.updatePostList({ dispatch, data: dataUpdate });
+            fetchApi.editPostClear({ dispatch });
+        }
     }, [state, dispatch]);
     return (
         <Layout>
@@ -85,6 +105,8 @@ const PostsPage = () => {
                 openModal={toggleModalEdit}
             />
             <PostModal
+                handleEditPost={handleEditPost}
+                isEdit={isEdit}
                 handleCreatePost={handleCreatePost}
                 onChangeInput={onChangeInput}
                 titleValue={titleValue}

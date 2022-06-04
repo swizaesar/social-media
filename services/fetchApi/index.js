@@ -31,6 +31,20 @@ const fetchApi = {
             key: "posts",
         });
     },
+    editPost: ({ dispatch, data }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts/${data.id}`,
+            method: "PUT",
+            data: data,
+            key: "editPost",
+        });
+    },
+    editPostClear: ({ dispatch }) => {
+        serviceAction(dispatch).reduxSetData({
+            type: "CLEAR",
+            key: "editPost",
+        });
+    },
     postListClear: ({ dispatch }) => {
         serviceAction(dispatch).reduxClear({
             type: "CLEAR",
@@ -52,7 +66,7 @@ const fetchApi = {
             key: "createPost",
         });
     },
-    createPostClear: ({ dispatch, data }) => {
+    createPostClear: ({ dispatch }) => {
         serviceAction(dispatch).reduxSetData({
             type: "CLEAR",
             key: "createPost",

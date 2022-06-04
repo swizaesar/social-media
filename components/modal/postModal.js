@@ -3,6 +3,8 @@ import { Modal, Button, Form, Input } from "antd";
 
 const PostModal = ({
     isShow = false,
+    isEdit = false,
+    handleEditPost = () => {},
     handleCancel = () => {},
     handleSavePost = () => {},
     onChangeInput = () => {},
@@ -22,7 +24,11 @@ const PostModal = ({
                 <Button key="back" onClick={handleCancel}>
                     Cancel
                 </Button>,
-                <Button key="submit" type="primary" onClick={handleCreatePost}>
+                <Button
+                    key="submit"
+                    type="primary"
+                    onClick={isEdit ? handleEditPost : handleCreatePost}
+                >
                     Save
                 </Button>,
             ]}
@@ -37,6 +43,7 @@ const PostModal = ({
                 </Form.Item>
                 <Form.Item label="Description" required>
                     <Input.TextArea
+                        style={{ height: 100 }}
                         onChange={(e) =>
                             onChangeInput("description", e.target.value)
                         }

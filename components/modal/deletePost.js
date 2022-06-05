@@ -4,6 +4,7 @@ import { Modal, Button } from "antd";
 const DeletePost = ({
     isShow = false,
     data,
+    loadingButton = false,
     handleCancel = () => {},
     handleConfirmDelete = () => {},
 }) => {
@@ -16,6 +17,7 @@ const DeletePost = ({
                     Cancel
                 </Button>,
                 <Button
+                    loading={loadingButton}
                     key="submit"
                     type="danger"
                     onClick={handleConfirmDelete}

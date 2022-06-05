@@ -7,6 +7,7 @@ import Posts from "../../../components/pages/posts";
 import PostModal from "../../../components/modal/postModal";
 import DeletePost from "../../../components/modal/deletePost";
 import CommentPost from "../../../components/modal/commentPost";
+import { validateEmail } from "../../../helpers/regex";
 
 const PostsPage = () => {
     const router = useRouter();
@@ -25,7 +26,9 @@ const PostsPage = () => {
     const [titleComment, setTitleComment] = React.useState("");
     const [descComment, setDescComment] = React.useState("");
     const [commentLength, setCommentLength] = React.useState(0);
+    const [isSubmit, setSubmit] = React.useState(false);
     const [commentEdit, setCommentEdit] = React.useState({});
+    const [loadingButton, setLoadingButton] = React.useState(false);
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
 
@@ -44,6 +47,7 @@ const PostsPage = () => {
         }
     };
     const toggleModalEdit = (data) => {
+        setSubmit(false);
         setPostDetail(data);
         setShowEdit(!isShowEdit);
         setTitleModal("Edit Post");
@@ -53,6 +57,7 @@ const PostsPage = () => {
     };
 
     const toggleModalCreate = () => {
+        setSubmit(false);
         setShowEdit(!isShowEdit);
         setTitleModal("Create Post");
         setEdit(false);
@@ -60,21 +65,33 @@ const PostsPage = () => {
         setDescValue("");
     };
     const handleCreatePost = () => {
-        let data = {
-            title: titleValue,
-            body: descValue,
-            userId: user.id,
-        };
-        fetchApi.createPost({ dispatch, data });
+        if (descValue === "" || titleValue === "") {
+            setSubmit(true);
+        } else {
+            setLoadingButton(true);
+            setSubmit(false);
+            let data = {
+                title: titleValue,
+                body: descValue,
+                userId: user.id,
+            };
+            fetchApi.createPost({ dispatch, data });
+        }
     };
     const handleEditPost = () => {
-        let updateData = {
-            title: titleValue,
-            body: descValue,
-            userId: user.id,
-            id: postDetail.id,
-        };
-        fetchApi.editPost({ dispatch, data: updateData });
+        if (descValue === "" || titleValue === "") {
+            setSubmit(true);
+        } else {
+            setLoadingButton(true);
+            setSubmit(false);
+            let updateData = {
+                title: titleValue,
+                body: descValue,
+                userId: user.id,
+                id: postDetail.id,
+            };
+            fetchApi.editPost({ dispatch, data: updateData });
+        }
     };
     const handleDeleteModal = (value) => {
         setDelete(!isDelete);
@@ -82,6 +99,7 @@ const PostsPage = () => {
     };
 
     const handleConfirmDelete = () => {
+        setLoadingButton(true);
         let updateData = {
             title: titleValue,
             body: descValue,
@@ -91,26 +109,41 @@ const PostsPage = () => {
         fetchApi.deletePost({ dispatch, data: updateData });
     };
     const handlePostComment = (data, comments) => {
+        setSubmit(false);
         setEdit(false);
         setCommentLength(comments);
         setComment(!isComment);
         setPostDetail(data);
+        setEmailComment("");
+        setTitleComment("");
+        setDescComment("");
     };
     const handleSubmitComment = () => {
-        let dataPost = {
-            body: descComment,
-            email: emailComment,
-            name: titleComment,
-            postId: postDetail.id,
-        };
-        fetchApi.postCommentList({
-            dispatch,
-            data: dataPost,
-            postId: postDetail.id,
-            key: commentLength,
-        });
+        if (
+            !validateEmail(emailComment) ||
+            descComment === "" ||
+            titleComment === ""
+        ) {
+            setSubmit(true);
+        } else {
+            setSubmit(false);
+            setLoadingButton(true);
+            let dataPost = {
+                body: descComment,
+                email: emailComment,
+                name: titleComment,
+                postId: postDetail.id,
+            };
+            fetchApi.postCommentList({
+                dispatch,
+                data: dataPost,
+                postId: postDetail.id,
+                key: commentLength,
+            });
+        }
     };
     const handleDeleteComment = (data, key) => {
+        setLoadingButton(true);
         let deleteComment = state.comments[`comment_${key}`].data.filter(
             (item) => item.id !== data.id
         );
@@ -121,6 +154,7 @@ const PostsPage = () => {
         });
     };
     const handleEditComment = (data, key) => {
+        setSubmit(false);
         setCommentLength(key);
         setEdit(true);
         setCommentEdit(data);
@@ -130,22 +164,32 @@ const PostsPage = () => {
         setComment(!isComment);
     };
     const handleEditCommentSubmit = () => {
-        let filter = state.comments[`comment_${commentLength}`].data.filter(
-            (item) => item.id !== commentEdit.id
-        );
-        let dataEditComment = {
-            body: descComment,
-            email: emailComment,
-            id: commentEdit.id,
-            name: titleComment,
-            postId: commentEdit.id,
-        };
-        let x = [dataEditComment, ...filter];
-        fetchApi.updateCommentList({
-            dispatch,
-            data: x,
-            key: commentLength,
-        });
+        if (
+            !validateEmail(emailComment) ||
+            descComment === "" ||
+            titleComment === ""
+        ) {
+            setSubmit(true);
+        } else {
+            setSubmit(true);
+            setLoadingButton(true);
+            let filter = state.comments[`comment_${commentLength}`].data.filter(
+                (item) => item.id !== commentEdit.id
+            );
+            let dataEditComment = {
+                body: descComment,
+                email: emailComment,
+                id: commentEdit.id,
+                name: titleComment,
+                postId: commentEdit.id,
+            };
+            let x = [dataEditComment, ...filter];
+            fetchApi.updateCommentList({
+                dispatch,
+                data: x,
+                key: commentLength,
+            });
+        }
     };
     React.useEffect(() => {
         if (slug !== undefined) {
@@ -163,6 +207,7 @@ const PostsPage = () => {
         if (state?.posts?.data) {
             setData(state.posts.data);
             fetchApi.postListClear({ dispatch });
+            setLoadingButton(false);
             setTimeout(() => {
                 setShowEdit(false);
             }, 500);
@@ -205,6 +250,7 @@ const PostsPage = () => {
             setDescComment("");
         }
         if (state?.comments[`comment_${commentLength}`]?.data) {
+            setLoadingButton(false);
             setComment(false);
             setEmailComment("");
             setTitleComment("");
@@ -224,6 +270,8 @@ const PostsPage = () => {
                 openModal={toggleModalEdit}
             />
             <PostModal
+                loadingButton={loadingButton}
+                isSubmit={isSubmit}
                 handleEditPost={handleEditPost}
                 isEdit={isEdit}
                 handleCreatePost={handleCreatePost}
@@ -235,12 +283,15 @@ const PostsPage = () => {
                 handleCancel={toggleModalEdit}
             />
             <DeletePost
+                loadingButton={loadingButton}
                 handleConfirmDelete={handleConfirmDelete}
                 data={postDetail}
                 handleCancel={handleDeleteModal}
                 isShow={isDelete}
             />
             <CommentPost
+                loadingButton={loadingButton}
+                isSubmit={isSubmit}
                 isEdit={isEdit}
                 handleEditCommentSubmit={handleEditCommentSubmit}
                 handleSavePost={handleSubmitComment}

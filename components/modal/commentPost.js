@@ -1,9 +1,11 @@
 import React from "react";
 import { Modal, Button, Form, Input } from "antd";
+import { validateEmail } from "../../helpers/regex";
 
 const CommentPost = ({
     isShow = false,
     isEdit = false,
+    isSubmit = false,
     handleCancel = () => {},
     handleSavePost = () => {},
     onChangeInput = () => {},
@@ -11,6 +13,7 @@ const CommentPost = ({
     titleComment = "",
     emailComment = "",
     descComment = "",
+    loadingButton = false,
 }) => {
     const [form] = Form.useForm();
     return (
@@ -23,6 +26,7 @@ const CommentPost = ({
                     Cancel
                 </Button>,
                 <Button
+                    loading={loadingButton}
                     key="submit"
                     type="primary"
                     onClick={isEdit ? handleEditCommentSubmit : handleSavePost}
@@ -34,6 +38,13 @@ const CommentPost = ({
             <Form form={form} layout="vertical">
                 <Form.Item label="Email" required>
                     <Input
+                        className={
+                            validateEmail(emailComment)
+                                ? ""
+                                : emailComment === "" && !isSubmit
+                                ? ""
+                                : "input-error"
+                        }
                         placeholder="Email"
                         type={"email"}
                         value={emailComment}
@@ -45,6 +56,9 @@ const CommentPost = ({
                 <Form.Item label="Title" required>
                     <Input
                         placeholder="Title"
+                        className={
+                            titleComment === "" && isSubmit ? "input-error" : ""
+                        }
                         type={"email"}
                         value={titleComment}
                         onChange={(e) =>
@@ -55,6 +69,9 @@ const CommentPost = ({
                 <Form.Item label="Description" required>
                     <Input.TextArea
                         style={{ height: 130 }}
+                        className={
+                            descComment === "" && isSubmit ? "input-error" : ""
+                        }
                         onChange={(e) =>
                             onChangeInput("descComment", e.target.value)
                         }

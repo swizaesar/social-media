@@ -75,9 +75,11 @@ const CardPost = ({
                         )
                     );
                 })}
-                <div className="see-more" onClick={loadMore}>
-                    See {showDataComment === 1 ? "more" : "less"}
-                </div>
+                {comments.length > 1 && (
+                    <div className="see-more" onClick={loadMore}>
+                        See {showDataComment === 1 ? "more" : "less"}
+                    </div>
+                )}
             </div>
         </CardPostStyle>
     );

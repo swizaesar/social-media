@@ -9,9 +9,11 @@ const PostModal = ({
     handleSavePost = () => {},
     onChangeInput = () => {},
     handleCreatePost = () => {},
+    isSubmit = false,
     title = "",
     titleValue = "",
     descValue = "",
+    loadingButton = false,
 }) => {
     const [form] = Form.useForm();
     return (
@@ -25,6 +27,7 @@ const PostModal = ({
                     Cancel
                 </Button>,
                 <Button
+                    loading={loadingButton}
                     key="submit"
                     type="primary"
                     onClick={isEdit ? handleEditPost : handleCreatePost}
@@ -38,6 +41,9 @@ const PostModal = ({
                     <Input
                         placeholder="Title"
                         value={titleValue}
+                        className={
+                            titleValue === "" && isSubmit ? "input-error" : ""
+                        }
                         onChange={(e) => onChangeInput("title", e.target.value)}
                     />
                 </Form.Item>
@@ -46,6 +52,9 @@ const PostModal = ({
                         style={{ height: 100 }}
                         onChange={(e) =>
                             onChangeInput("description", e.target.value)
+                        }
+                        className={
+                            descValue === "" && isSubmit ? "input-error" : ""
                         }
                         placeholder="Description"
                         value={descValue}

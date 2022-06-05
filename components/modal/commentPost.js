@@ -4,11 +4,10 @@ import { Modal, Button, Form, Input } from "antd";
 const CommentPost = ({
     isShow = false,
     isEdit = false,
-    handleEditPost = () => {},
     handleCancel = () => {},
     handleSavePost = () => {},
     onChangeInput = () => {},
-    handleCreatePost = () => {},
+    handleEditCommentSubmit = () => {},
     titleComment = "",
     emailComment = "",
     descComment = "",
@@ -23,7 +22,11 @@ const CommentPost = ({
                 <Button key="back" onClick={handleCancel}>
                     Cancel
                 </Button>,
-                <Button key="submit" type="primary" onClick={handleSavePost}>
+                <Button
+                    key="submit"
+                    type="primary"
+                    onClick={isEdit ? handleEditCommentSubmit : handleSavePost}
+                >
                     Save
                 </Button>,
             ]}

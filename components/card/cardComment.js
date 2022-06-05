@@ -2,7 +2,12 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import React from "react";
 import { CardCommentStyle } from "./style";
 
-const CardComment = ({ data, id, handleDeleteComment = () => {} }) => {
+const CardComment = ({
+    data,
+    id,
+    handleDeleteComment = () => {},
+    handleEditComment = () => {},
+}) => {
     return (
         <CardCommentStyle>
             <div className="comment">
@@ -17,7 +22,10 @@ const CardComment = ({ data, id, handleDeleteComment = () => {} }) => {
                 >
                     <DeleteOutlined /> Delete
                 </div>
-                <div className="comment-action__edit">
+                <div
+                    className="comment-action__edit"
+                    onClick={() => handleEditComment(data, id)}
+                >
                     <EditOutlined /> Edit
                 </div>
             </div>

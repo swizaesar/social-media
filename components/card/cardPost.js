@@ -12,6 +12,7 @@ const CardPost = ({
     deleteAction = () => {},
     commentPost = () => {},
     handleDeleteComment = () => {},
+    handleEditComment = () => {},
 }) => {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
@@ -59,6 +60,7 @@ const CardPost = ({
                 {comments.map((item, key) => {
                     return (
                         <CardComment
+                            handleEditComment={handleEditComment}
                             id={length}
                             handleDeleteComment={handleDeleteComment}
                             key={key}

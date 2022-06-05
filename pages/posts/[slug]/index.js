@@ -25,6 +25,7 @@ const PostsPage = () => {
     const [titleComment, setTitleComment] = React.useState("");
     const [descComment, setDescComment] = React.useState("");
     const [commentLength, setCommentLength] = React.useState(0);
+    const [commentEdit, setCommentEdit] = React.useState({});
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
 
@@ -90,6 +91,7 @@ const PostsPage = () => {
         fetchApi.deletePost({ dispatch, data: updateData });
     };
     const handlePostComment = (data, comments) => {
+        setEdit(false);
         setCommentLength(comments);
         setComment(!isComment);
         setPostDetail(data);
@@ -116,6 +118,33 @@ const PostsPage = () => {
             dispatch,
             data: deleteComment,
             key: key,
+        });
+    };
+    const handleEditComment = (data, key) => {
+        setCommentLength(key);
+        setEdit(true);
+        setCommentEdit(data);
+        setTitleComment(data.name);
+        setDescComment(data.body);
+        setEmailComment(data.email);
+        setComment(!isComment);
+    };
+    const handleEditCommentSubmit = () => {
+        let filter = state.comments[`comment_${commentLength}`].data.filter(
+            (item) => item.id !== commentEdit.id
+        );
+        let dataEditComment = {
+            body: descComment,
+            email: emailComment,
+            id: commentEdit.id,
+            name: titleComment,
+            postId: commentEdit.id,
+        };
+        let x = [dataEditComment, ...filter];
+        fetchApi.updateCommentList({
+            dispatch,
+            data: x,
+            key: commentLength,
         });
     };
     React.useEffect(() => {
@@ -175,10 +204,17 @@ const PostsPage = () => {
             setTitleComment("");
             setDescComment("");
         }
+        if (state?.comments[`comment_${commentLength}`]?.data) {
+            setComment(!isComment);
+            setEmailComment("");
+            setTitleComment("");
+            setDescComment("");
+        }
     }, [state, dispatch]);
     return (
         <Layout>
             <Posts
+                handleEditComment={handleEditComment}
                 handleDeleteComment={handleDeleteComment}
                 handlePostComment={handlePostComment}
                 handleDeleteModal={handleDeleteModal}
@@ -205,6 +241,8 @@ const PostsPage = () => {
                 isShow={isDelete}
             />
             <CommentPost
+                isEdit={isEdit}
+                handleEditCommentSubmit={handleEditCommentSubmit}
                 handleSavePost={handleSubmitComment}
                 handleCancel={handlePostComment}
                 titleComment={titleComment}

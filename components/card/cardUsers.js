@@ -12,11 +12,11 @@ const CardUser = ({ data, gutter = 0, onClick = () => {} }) => {
     return (
         <CardUserStyle
             actions={[
-                <Link href={`/albums/${data.id}`}>
+                <Link href={`/albums/${data.id}`} key="albums">
                     <a className="card-action">View Albums</a>
                 </Link>,
-                <Link href={`/posts/${data.id}`}>
-                    <a className="card-action">View Post</a>
+                <Link href={`/posts/${data.id}`} key="posts">
+                    <a className="card-action">View Posts</a>
                 </Link>,
             ]}
             gutter={gutter}

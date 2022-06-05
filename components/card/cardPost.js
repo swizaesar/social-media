@@ -26,7 +26,7 @@ const CardPost = ({
         if (state?.comments[`comment_${length}`]?.data) {
             setComments(state.comments[`comment_${length}`].data);
         }
-    }, [state, setComments]);
+    }, [state, setComments, length]);
     const loadMore = () => {
         setShowDataComment(showDataComment === 1 ? comments.length : 1);
     };

@@ -109,7 +109,6 @@ const PostsPage = () => {
         fetchApi.deletePost({ dispatch, data: updateData });
     };
     const handlePostComment = (data, comments) => {
-        console.log("masuk");
         setSubmit(false);
         setEdit(false);
         setCommentLength(comments);
@@ -204,7 +203,6 @@ const PostsPage = () => {
             });
         }
     }, [dispatch, slug]);
-    console.log(isComment);
     React.useEffect(() => {
         if (state?.posts?.data) {
             setData(state.posts.data);

@@ -119,6 +119,16 @@ export const CardPostStyle = styled(Card)`
             }
         }
     }
+    .see-more {
+        cursor: pointer;
+        margin-bottom: 15px;
+        text-align: right;
+        font-size: 12px;
+        color: #1890ff;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 `;
 export const CardCommentStyle = styled.div`
     padding: 15px 0;

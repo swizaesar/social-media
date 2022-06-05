@@ -1,6 +1,5 @@
 import React from "react";
 import { CardPostStyle } from "./style";
-import Link from "next/link";
 import CardComment from "./cardComment";
 import fetchApi from "../../services/fetchApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +15,7 @@ const CardPost = ({
 }) => {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
+    const [showDataComment, setShowDataComment] = React.useState(1);
     const [comments, setComments] = React.useState([]);
     React.useEffect(() => {
         if (data) {
@@ -27,6 +27,9 @@ const CardPost = ({
             setComments(state.comments[`comment_${length}`].data);
         }
     }, [state]);
+    const loadMore = () => {
+        setShowDataComment(showDataComment === 1 ? comments.length : 1);
+    };
     return (
         <CardPostStyle gutter={gutter}>
             <div className="card-post">
@@ -57,18 +60,24 @@ const CardPost = ({
                 >
                     Comment
                 </div>
+
                 {comments.map((item, key) => {
                     return (
-                        <CardComment
-                            handleEditComment={handleEditComment}
-                            id={length}
-                            handleDeleteComment={handleDeleteComment}
-                            key={key}
-                            post={data}
-                            data={item}
-                        />
+                        key < showDataComment && (
+                            <CardComment
+                                handleEditComment={handleEditComment}
+                                id={length}
+                                handleDeleteComment={handleDeleteComment}
+                                key={key}
+                                post={data}
+                                data={item}
+                            />
+                        )
                     );
                 })}
+                <div className="see-more" onClick={loadMore}>
+                    See {showDataComment === 1 ? "more" : "less"}
+                </div>
             </div>
         </CardPostStyle>
     );

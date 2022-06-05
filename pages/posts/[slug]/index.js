@@ -159,30 +159,30 @@ const PostsPage = () => {
             });
         }
     }, [dispatch, slug]);
-
     React.useEffect(() => {
         if (state?.posts?.data) {
             setData(state.posts.data);
             fetchApi.postListClear({ dispatch });
+            setTimeout(() => {
+                setShowEdit(false);
+            }, 500);
         }
         if (state?.userDetail?.isSuccess) {
             setUser(state.userDetail.data);
         }
         if (state?.createPost?.isSuccess) {
-            setShowEdit(!isShowEdit);
             let dataUpdate = [state.createPost.data, ...data];
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.createPostClear({ dispatch });
         }
         if (state?.editPost?.isSuccess) {
-            setShowEdit(!isShowEdit);
             let filterData = data.filter((item) => item.id !== postDetail.id);
             let dataUpdate = [state.editPost.data, ...filterData];
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.editPostClear({ dispatch });
         }
         if (state?.deletePost?.isSuccess) {
-            setDelete(!isDelete);
+            setDelete(false);
             let filterData = data.filter((item) => item.id !== postDetail.id);
             let dataUpdate = [...filterData];
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
@@ -199,13 +199,13 @@ const PostsPage = () => {
                 key: commentLength,
             });
             fetchApi.postCommentsClear({ dispatch, key: commentLength });
-            setComment(!isComment);
+            setComment(false);
             setEmailComment("");
             setTitleComment("");
             setDescComment("");
         }
         if (state?.comments[`comment_${commentLength}`]?.data) {
-            setComment(!isComment);
+            setComment(false);
             setEmailComment("");
             setTitleComment("");
             setDescComment("");

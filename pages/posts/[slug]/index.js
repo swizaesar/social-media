@@ -6,12 +6,14 @@ import fetchApi from "../../../services/fetchApi";
 import Posts from "../../../components/pages/posts";
 import PostModal from "../../../components/modal/postModal";
 import DeletePost from "../../../components/modal/deletePost";
+import CommentPost from "../../../components/modal/commentPost";
 
 const PostsPage = () => {
     const router = useRouter();
     const { slug } = router.query;
     const [data, setData] = React.useState([]);
     const [postDetail, setPostDetail] = React.useState({});
+    const [isComment, setComment] = React.useState(false);
     const [titleValue, setTitleValue] = React.useState("");
     const [descValue, setDescValue] = React.useState("");
     const [isEdit, setEdit] = React.useState(false);
@@ -19,6 +21,10 @@ const PostsPage = () => {
     const [isShowEdit, setShowEdit] = React.useState(false);
     const [titleModal, setTitleModal] = React.useState("Create Post");
     const [isDelete, setDelete] = React.useState(false);
+    const [emailComment, setEmailComment] = React.useState("");
+    const [titleComment, setTitleComment] = React.useState("");
+    const [descComment, setDescComment] = React.useState("");
+    const [commentLength, setCommentLength] = React.useState(0);
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
 
@@ -26,6 +32,12 @@ const PostsPage = () => {
         switch (type) {
             case "title":
                 return setTitleValue(value);
+            case "emailComment":
+                return setEmailComment(value);
+            case "titleComment":
+                return setTitleComment(value);
+            case "descComment":
+                return setDescComment(value);
             default:
                 return setDescValue(value);
         }
@@ -77,6 +89,25 @@ const PostsPage = () => {
         };
         fetchApi.deletePost({ dispatch, data: updateData });
     };
+    const handlePostComment = (data, comments) => {
+        setCommentLength(comments);
+        setComment(!isComment);
+        setPostDetail(data);
+    };
+    const handleSubmitComment = (data) => {
+        let dataPost = {
+            body: descComment,
+            email: emailComment,
+            name: titleComment,
+            postId: postDetail.id,
+        };
+        fetchApi.postCommentList({
+            dispatch,
+            data: dataPost,
+            postId: postDetail.id,
+            key: commentLength,
+        });
+    };
     React.useEffect(() => {
         if (slug !== undefined) {
             let params = {
@@ -118,10 +149,28 @@ const PostsPage = () => {
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.deletePostClear({ dispatch });
         }
+        if (state[`comment_${commentLength}`]?.data) {
+            let dataUpdate = [
+                state[`comment_${commentLength}`].data,
+                ...state.comments[`comment_${commentLength}`].data,
+            ];
+            fetchApi.updateCommentList({
+                dispatch,
+                data: dataUpdate,
+                key: commentLength,
+            });
+            fetchApi.postCommentsClear({ dispatch, key: commentLength });
+            setComment(!isComment);
+            setEmailComment("");
+            setTitleComment("");
+            setDescComment("");
+        }
     }, [state, dispatch]);
+    console.log("dataUpdate", state);
     return (
         <Layout>
             <Posts
+                handlePostComment={handlePostComment}
                 handleDeleteModal={handleDeleteModal}
                 toggleModalCreate={toggleModalCreate}
                 user={user}
@@ -144,6 +193,15 @@ const PostsPage = () => {
                 data={postDetail}
                 handleCancel={handleDeleteModal}
                 isShow={isDelete}
+            />
+            <CommentPost
+                handleSavePost={handleSubmitComment}
+                handleCancel={handlePostComment}
+                titleComment={titleComment}
+                emailComment={emailComment}
+                descComment={descComment}
+                onChangeInput={onChangeInput}
+                isShow={isComment}
             />
         </Layout>
     );

@@ -4,15 +4,13 @@ import Link from "next/link";
 import CardComment from "./cardComment";
 import fetchApi from "../../services/fetchApi";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input } from "antd";
-import { SendOutlined } from "@ant-design/icons";
 const CardPost = ({
     data,
     gutter,
     length,
-    comment,
     editAction = () => {},
     deleteAction = () => {},
+    commentPost = () => {},
 }) => {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
@@ -31,7 +29,7 @@ const CardPost = ({
         <CardPostStyle gutter={gutter}>
             <div className="card-post">
                 <div className="card-post__section">
-                    <h3>{data.title}</h3>
+                    <h3 className="card-post__section-title">{data.title}</h3>
                     <div>{data.body}</div>
                 </div>
                 <div className="card-post__action">
@@ -51,14 +49,14 @@ const CardPost = ({
             </div>
 
             <div className="card-comment">
-                <div className="card-comment__form">
-                    <Input placeholder="Comment" />
-                    <Button type="button" className="card-comment__form-button">
-                        <SendOutlined />
-                    </Button>
+                <div
+                    className="card-comment__form"
+                    onClick={() => commentPost(data, length)}
+                >
+                    Comment
                 </div>
                 {comments.map((item, key) => {
-                    return <CardComment post={data} data={item} />;
+                    return <CardComment key={key} post={data} data={item} />;
                 })}
             </div>
         </CardPostStyle>

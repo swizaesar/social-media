@@ -67,6 +67,9 @@ export const CardPostStyle = styled(Card)`
             margin-bottom: 10px;
             &__section {
                 margin-bottom: 24px;
+                &-title {
+                    font-weight: 600;
+                }
             }
             &__action {
                 display: flex;
@@ -95,8 +98,11 @@ export const CardPostStyle = styled(Card)`
         }
         &-comment {
             &__form {
-                display: flex;
-                align-items: center;
+                padding: 10px 20px;
+                background-color: #f0f2f5;
+                color: #6a6b75;
+                cursor: pointer;
+                border-radius: 30px;
                 &-button {
                     border: unset;
                     color: #4a4a4a;

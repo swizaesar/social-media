@@ -81,7 +81,7 @@ const fetchApi = {
         });
     },
     createPostClear: ({ dispatch }) => {
-        serviceAction(dispatch).reduxSetData({
+        serviceAction(dispatch).reduxClear({
             type: "CLEAR",
             key: "createPost",
         });
@@ -113,6 +113,30 @@ const fetchApi = {
             method: "GET",
             group: true,
             groupName: "comments",
+            key: `comment_${key}`,
+        });
+    },
+
+    postCommentList: ({ dispatch, data, postId, key }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts/${postId}/comments`,
+            method: "POST",
+            data: data,
+            key: `comment_${key}`,
+        });
+    },
+    updateCommentList: ({ dispatch, data, key }) => {
+        serviceAction(dispatch).reduxSetData({
+            data: data,
+            type: 200,
+            group: true,
+            groupName: "comments",
+            key: `comment_${key}`,
+        });
+    },
+    postCommentsClear: ({ dispatch, key }) => {
+        serviceAction(dispatch).reduxClear({
+            type: "CLEAR",
             key: `comment_${key}`,
         });
     },

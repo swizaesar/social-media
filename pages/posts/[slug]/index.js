@@ -94,7 +94,7 @@ const PostsPage = () => {
         setComment(!isComment);
         setPostDetail(data);
     };
-    const handleSubmitComment = (data) => {
+    const handleSubmitComment = () => {
         let dataPost = {
             body: descComment,
             email: emailComment,
@@ -106,6 +106,16 @@ const PostsPage = () => {
             data: dataPost,
             postId: postDetail.id,
             key: commentLength,
+        });
+    };
+    const handleDeleteComment = (data, key) => {
+        let deleteComment = state.comments[`comment_${key}`].data.filter(
+            (item) => item.id !== data.id
+        );
+        fetchApi.deleteCommentList({
+            dispatch,
+            data: deleteComment,
+            key: key,
         });
     };
     React.useEffect(() => {
@@ -166,10 +176,10 @@ const PostsPage = () => {
             setDescComment("");
         }
     }, [state, dispatch]);
-    console.log("dataUpdate", state);
     return (
         <Layout>
             <Posts
+                handleDeleteComment={handleDeleteComment}
                 handlePostComment={handlePostComment}
                 handleDeleteModal={handleDeleteModal}
                 toggleModalCreate={toggleModalCreate}

@@ -98,6 +98,7 @@ export const CardPostStyle = styled(Card)`
         }
         &-comment {
             &__form {
+                margin-bottom: 15px;
                 padding: 10px 20px;
                 background-color: #f0f2f5;
                 color: #6a6b75;
@@ -122,7 +123,6 @@ export const CardPostStyle = styled(Card)`
 export const CardCommentStyle = styled.div`
     padding: 15px 0;
     border-top: 1px solid #f0f0f0;
-    margin-top: 15px;
     .comment {
         margin-bottom: 10px;
         &-name {

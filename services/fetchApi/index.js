@@ -125,6 +125,15 @@ const fetchApi = {
             key: `comment_${key}`,
         });
     },
+    deleteCommentList: ({ dispatch, data, key }) => {
+        serviceAction(dispatch).reduxSetData({
+            type: 200,
+            data: data,
+            group: true,
+            groupName: "comments",
+            key: `comment_${key}`,
+        });
+    },
     updateCommentList: ({ dispatch, data, key }) => {
         serviceAction(dispatch).reduxSetData({
             data: data,

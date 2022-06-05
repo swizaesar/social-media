@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import Image from "next/image";
 import HeaderStyle from "./style";
 import { useRouter } from "next/router";
 const Header = () => {
@@ -29,7 +30,7 @@ const Header = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    <img
+                                    <Image
                                         src="/images/github.png"
                                         alt="github"
                                     />

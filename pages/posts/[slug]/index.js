@@ -256,7 +256,7 @@ const PostsPage = () => {
             setTitleComment("");
             setDescComment("");
         }
-    }, [state, dispatch]);
+    }, [state, dispatch, commentLength, data, postDetail]);
     return (
         <Layout>
             <Posts

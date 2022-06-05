@@ -21,12 +21,12 @@ const CardPost = ({
         if (data) {
             fetchApi.getCommentList({ dispatch, postId: data.id, key: length });
         }
-    }, [data]);
+    }, [data, length, dispatch]);
     React.useEffect(() => {
         if (state?.comments[`comment_${length}`]?.data) {
             setComments(state.comments[`comment_${length}`].data);
         }
-    }, [state]);
+    }, [state, setComments]);
     const loadMore = () => {
         setShowDataComment(showDataComment === 1 ? comments.length : 1);
     };

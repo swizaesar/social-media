@@ -1,7 +1,6 @@
 import React from "react";
-import { Col, Row } from "antd";
+import { Col, Row, Image } from "antd";
 import Link from "next/link";
-import Image from "next/image";
 import HeaderStyle from "./style";
 import { useRouter } from "next/router";
 const Header = () => {

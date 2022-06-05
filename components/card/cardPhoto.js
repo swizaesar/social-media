@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Image } from "antd";
 import React from "react";
 import { CardPhotoStyle } from "./style";
 const CardPhoto = ({ data, gutter = 0 }) => {

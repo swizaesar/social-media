@@ -5,10 +5,20 @@ const types = {
     CLEAR: "CLEAR",
 };
 const resultRedux = (state, action) => {
-    return {
-        ...state,
-        [action.key]: { ...action },
-    };
+    if (action.group) {
+        return {
+            ...state,
+            [action.groupName]: {
+                ...state[action.groupName],
+                [action.key]: { ...action },
+            },
+        };
+    } else {
+        return {
+            ...state,
+            [action.key]: { ...action },
+        };
+    }
 };
 // Global state (for save global state)
 const stateRedux = (state, action) => {

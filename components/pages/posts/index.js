@@ -24,6 +24,7 @@ const Posts = ({
                     return (
                         <Col span={24} key={key}>
                             <CardPost
+                                length={key}
                                 deleteAction={handleDeleteModal}
                                 editAction={openModal}
                                 gutter={gutter}

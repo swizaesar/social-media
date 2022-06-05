@@ -101,7 +101,6 @@ const PostsPage = () => {
         if (state?.createPost?.isSuccess) {
             setShowEdit(!isShowEdit);
             let dataUpdate = [state.createPost.data, ...data];
-            console.log(dataUpdate);
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.createPostClear({ dispatch });
         }

@@ -12,6 +12,8 @@ const serviceApi = async (options) => {
                 success: true,
                 error: false,
                 key: options.key,
+                group: options.group || false,
+                groupName: options.groupName || "",
                 type: res.status,
             };
         })
@@ -21,6 +23,8 @@ const serviceApi = async (options) => {
                 success: false,
                 error: true,
                 key: options.key,
+                group: options.group || false,
+                groupName: options.groupName || "",
                 type: res.status,
             };
         });
@@ -35,6 +39,8 @@ const fetchApi = async (dispatch, value) => {
             isError: result.error,
             isSuccess: result.success,
             key: value.key,
+            group: value.group || false,
+            groupName: value.groupName || "",
             type: result.type,
         });
     }

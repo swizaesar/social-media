@@ -107,5 +107,14 @@ const fetchApi = {
             key: "photos",
         });
     },
+    getCommentList: ({ dispatch, postId, key }) => {
+        serviceAction(dispatch).fetchApi({
+            url: `/posts/${postId}/comments`,
+            method: "GET",
+            group: true,
+            groupName: "comments",
+            key: `comment_${key}`,
+        });
+    },
 };
 export default fetchApi;

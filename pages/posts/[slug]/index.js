@@ -229,7 +229,11 @@ const PostsPage = () => {
         }
         if (state?.deletePost?.isSuccess) {
             setDelete(false);
-            let filterData = data.filter((item) => item.id !== postDetail.id);
+            let filterData = data.filter(
+                (item) =>
+                    item.title !== postDetail.title &&
+                    item.body !== postDetail.body
+            );
             let dataUpdate = [...filterData];
             fetchApi.updatePostList({ dispatch, data: dataUpdate });
             fetchApi.deletePostClear({ dispatch });

@@ -145,7 +145,7 @@ const PostsPage = () => {
     const handleDeleteComment = (data, key) => {
         setLoadingButton(true);
         let deleteComment = state.comments[`comment_${key}`].data.filter(
-            (item) => item.id !== data.id
+            (item) => item.email !== data.email && item.body !== data.body
         );
         fetchApi.deleteCommentList({
             dispatch,
@@ -189,6 +189,7 @@ const PostsPage = () => {
                 data: x,
                 key: commentLength,
             });
+            setComment(false);
         }
     };
     React.useEffect(() => {
@@ -245,15 +246,9 @@ const PostsPage = () => {
             });
             fetchApi.postCommentsClear({ dispatch, key: commentLength });
             setComment(false);
-            setEmailComment("");
-            setTitleComment("");
-            setDescComment("");
         }
         if (state?.comments[`comment_${commentLength}`]?.data) {
             setLoadingButton(false);
-            setEmailComment("");
-            setTitleComment("");
-            setDescComment("");
         }
     }, [state, dispatch, commentLength, data, postDetail]);
     return (

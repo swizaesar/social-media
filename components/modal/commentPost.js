@@ -36,6 +36,19 @@ const CommentPost = ({
             ]}
         >
             <Form form={form} layout="vertical">
+                <Form.Item label="Name" required>
+                    <Input
+                        placeholder="Name"
+                        className={
+                            titleComment === "" && isSubmit ? "input-error" : ""
+                        }
+                        type={"text"}
+                        value={titleComment}
+                        onChange={(e) =>
+                            onChangeInput("titleComment", e.target.value)
+                        }
+                    />
+                </Form.Item>
                 <Form.Item label="Email" required>
                     <Input
                         className={
@@ -50,19 +63,6 @@ const CommentPost = ({
                         value={emailComment}
                         onChange={(e) =>
                             onChangeInput("emailComment", e.target.value)
-                        }
-                    />
-                </Form.Item>
-                <Form.Item label="Title" required>
-                    <Input
-                        placeholder="Title"
-                        className={
-                            titleComment === "" && isSubmit ? "input-error" : ""
-                        }
-                        type={"email"}
-                        value={titleComment}
-                        onChange={(e) =>
-                            onChangeInput("titleComment", e.target.value)
                         }
                     />
                 </Form.Item>
